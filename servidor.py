@@ -1,6 +1,6 @@
 import socket
 from pathlib import Path
-from utils import extract_route, read_file
+from utils import extract_route, read_file, build_response
 from views import index
 
 CUR_DIR = Path(__file__).parent
@@ -17,7 +17,7 @@ print(f'Servidor escutando em (ctrl+click): http://{SERVER_HOST}:{SERVER_PORT}')
 while True:
     client_connection, client_address = server_socket.accept()
 
-    request = client_connection.recv(2**16).decode()
+    request = client_connection.recv(1024).decode()
     print('*'*100)
     print(request)
 
@@ -25,13 +25,13 @@ while True:
 
     filepath = CUR_DIR / route
     if filepath.is_file():
-        response = read_file(filepath)
+        response = build_response() + read_file(filepath)
     elif route == '':
-        response = index()
+        response = index(request)
     else:
-        response = bytes()
+        response = build_response()
 
-    client_connection.sendall('HTTP/1.1 200 OK\n\n'.encode() + response)
+    client_connection.sendall(response)
 
     client_connection.close()
 
