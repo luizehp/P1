@@ -1,7 +1,7 @@
 import socket
 from pathlib import Path
 from utils import extract_route, read_file, build_response
-from views import index
+from views import index, edit
 
 CUR_DIR = Path(__file__).parent
 SERVER_HOST = 'localhost'
@@ -18,6 +18,7 @@ while True:
     client_connection, client_address = server_socket.accept()
 
     request = client_connection.recv(1024).decode()
+
     print('*'*100)
     print(request)
 
@@ -28,8 +29,12 @@ while True:
         response = build_response() + read_file(filepath)
     elif route == '':
         response = index(request)
+    elif route.startswith("?edit"):
+        response= edit(request) 
     else:
         response = build_response()
+    """ elif route.startswith("%C2%A0"):
+        response = index(request) """
 
     client_connection.sendall(response)
 

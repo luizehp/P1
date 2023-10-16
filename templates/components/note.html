@@ -1,4 +1,19 @@
-<li>
-    <h3>{title}</h3>
-    <p>{details}</p>
-</li>
+<div class="card">
+    <div class = "bt">
+        <h3 class="card-title">{title}</h3>
+        <div class="buttons">
+          <form action = "" method="get">
+            <input type="hidden" name="edit" value = "{identificador}" required>
+            <button class="edit", type="submit">Edit</button>
+        </form>
+        <p>|</p>
+        <form method="post">
+            <input type="hidden" name="id" value = "{identificador}">
+            <button class="delete", type="submit">X</button>
+        </form>
+        </div>
+    </div>
+    <div class="card-content">
+      <p>{details}</p>
+    </div>
+  </div>
